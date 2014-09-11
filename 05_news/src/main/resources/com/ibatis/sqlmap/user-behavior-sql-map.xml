@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="UserBehavior">
+    <typeAlias alias="UserBehaviorDO" type="com.bigdata.entity.UserBehaviorDO"/>
+
+    <resultMap id="UserBehaviorResult" class="UserBehaviorDO">
+        <result property="id" column="id" />
+        <result property="userId" column="user_id" />
+        <result property="newsId" column="news_id" />
+        <result property="scanTime" column="scan_time" />
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="publishTime" column="publish_time" />
+    </resultMap>
+
+    <insert id="addUserBehavior" parameterClass="UserBehaviorDO">
+      INSERT INTO $tableName$(user_id, news_id, scan_time, title, content, publish_time)
+      VALUES (#userId#, #newsId#,#scanTime#, #title#,#content#, #publishTime# )
+        <selectKey resultClass="int" keyProperty="id">
+            <![CDATA[SELECT LAST_INSERT_ID() AS id ]]>
+        </selectKey>
+    </insert>
+
+
+    <select id="queryByUserId" parameterClass="map" resultMap="UserBehaviorResult">
+        SELECT id,user_id,news_id,title/*,visit_datetime*/ FROM  $tableName$ WHERE user_id = #userId#
+    </select>
+</sqlMap>
